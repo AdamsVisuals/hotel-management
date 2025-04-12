@@ -162,59 +162,88 @@ body {
     font-size: 16px;
 }
 
-/* Guest Table Styles */
+/* Enhanced Guest Management Styles */
+:root {
+    --primary-color: #4361ee;
+    --primary-light: #e6e9ff;
+    --secondary-color: #3a0ca3;
+    --accent-color: #f72585;
+    --light-color: #f8f9fa;
+    --dark-color: #212529;
+    --text-color: #333;
+    --text-light: #6c757d;
+    --success-color: #4cc9f0;
+    --warning-color: #ff9e00;
+    --danger-color: #f72585;
+    --vip-color: #ffd700;
+    --border-radius: 8px;
+    --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+}
+
+/* Table Styles */
 .guest-table-container {
     background-color: white;
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
     overflow-x: auto;
-    padding: 20px;
+    padding: 0;
+    margin-top: 20px;
 }
 
 #guests-table {
     width: 100%;
     border-collapse: collapse;
     font-size: 14px;
+    min-width: 1000px;
 }
 
 #guests-table thead {
     background-color: var(--primary-color);
     color: white;
+    position: sticky;
+    top: 0;
 }
 
 #guests-table th {
-    padding: 12px 15px;
+    padding: 16px 20px;
     text-align: left;
     font-weight: 500;
-    white-space: nowrap;
+    text-transform: uppercase;
+    font-size: 13px;
+    letter-spacing: 0.5px;
 }
 
 #guests-table th i {
     margin-right: 8px;
+    font-size: 14px;
 }
 
 #guests-table tbody tr {
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid #f0f0f0;
     transition: var(--transition);
 }
 
 #guests-table tbody tr:hover {
-    background-color: rgba(67, 97, 238, 0.05);
+    background-color: var(--primary-light);
 }
 
 #guests-table td {
-    padding: 12px 15px;
+    padding: 16px 20px;
     vertical-align: middle;
+    color: var(--text-color);
 }
 
+/* Status Badges */
 .guest-status {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    padding: 5px 10px;
+    padding: 6px 12px;
     border-radius: 20px;
     font-size: 12px;
     font-weight: 600;
+    text-transform: capitalize;
 }
 
 .status-checked-in {
@@ -225,8 +254,8 @@ body {
 
 .status-checked-out {
     background-color: rgba(108, 117, 125, 0.1);
-    color: #6c757d;
-    border: 1px solid #6c757d;
+    color: var(--text-light);
+    border: 1px solid var(--text-light);
 }
 
 .status-vip {
@@ -241,53 +270,143 @@ body {
     border: 1px solid var(--danger-color);
 }
 
-.table-actions {
+/* Action Buttons */
+.guest-actions {
     display: flex;
     gap: 8px;
 }
 
-.btn-table {
-    padding: 6px 10px;
+.btn-edit, .btn-delete {
+    padding: 8px 12px;
     border-radius: var(--border-radius);
+    font-size: 13px;
+    font-weight: 500;
     cursor: pointer;
     transition: var(--transition);
+    border: none;
     display: flex;
     align-items: center;
-    justify-content: center;
     gap: 5px;
-    font-size: 12px;
-    font-weight: 500;
-    border: none;
-}
-
-.btn-view {
-    background-color: rgba(67, 97, 238, 0.1);
-    color: var(--primary-color);
-}
-
-.btn-view:hover {
-    background-color: var(--primary-color);
-    color: white;
 }
 
 .btn-edit {
     background-color: rgba(255, 193, 7, 0.1);
-    color: #ffc107;
+    color: var(--warning-color);
 }
 
 .btn-edit:hover {
-    background-color: #ffc107;
+    background-color: var(--warning-color);
     color: white;
 }
 
 .btn-delete {
     background-color: rgba(220, 53, 69, 0.1);
-    color: #dc3545;
+    color: var(--danger-color);
 }
 
 .btn-delete:hover {
-    background-color: #dc3545;
+    background-color: var(--danger-color);
     color: white;
+}
+
+/* Empty State */
+.no-guests {
+    text-align: center;
+    padding: 40px;
+    color: var(--text-light);
+}
+
+.no-guests i {
+    font-size: 24px;
+    margin-bottom: 10px;
+    display: block;
+    color: var(--text-light);
+}
+
+/* Highlight VIP Guests */
+tr.vip-guest {
+    background-color: rgba(255, 215, 0, 0.05);
+}
+
+tr.vip-guest td:first-child {
+    border-left: 3px solid var(--vip-color);
+}
+
+/* Responsive Table */
+@media (max-width: 1200px) {
+    .guest-table-container {
+        border-radius: 0;
+        box-shadow: none;
+        padding: 0;
+    }
+    
+    #guests-table {
+        min-width: unset;
+        display: block;
+    }
+    
+    #guests-table thead {
+        display: none;
+    }
+    
+    #guests-table tbody, #guests-table tr, #guests-table td {
+        display: block;
+        width: 100%;
+    }
+    
+    #guests-table tr {
+        margin-bottom: 15px;
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+        overflow: hidden;
+    }
+    
+    #guests-table td {
+        padding: 12px 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #f0f0f0;
+    }
+    
+    #guests-table td:before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: var(--primary-color);
+        margin-right: 15px;
+    }
+    
+    .guest-actions {
+        justify-content: flex-end;
+    }
+}
+
+/* Hover Effects */
+.btn-edit:hover, .btn-delete:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Focus States */
+.btn-edit:focus, .btn-delete:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.3);
+}
+
+/* Animation for New Guests */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#guests-table tbody tr {
+    animation: fadeInUp 0.3s ease-out;
 }
 
 /* Modal Styles */
