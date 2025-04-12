@@ -1,0 +1,300 @@
+/* Booking Management Specific Styles */
+.booking-management-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.booking-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #ddd;
+}
+
+.booking-header h1 {
+    color: #2c3e50;
+    font-size: 28px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.booking-nav {
+    display: flex;
+    gap: 15px;
+}
+
+.booking-main {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 25px;
+}
+
+.booking-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.search-filter {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.search-box, .filter-box, .date-filter {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-box i, .filter-box i, .date-filter i {
+    position: absolute;
+    left: 12px;
+    color: #95a5a6;
+}
+
+.search-input, .filter-select, .date-input {
+    padding: 10px 15px 10px 40px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.search-input:focus, .filter-select:focus, .date-input:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+.filter-select {
+    appearance: none;
+    background-color: white;
+    cursor: pointer;
+    width: 180px;
+}
+
+.date-input {
+    width: 160px;
+}
+
+/* Booking Table Styles */
+.booking-table-container {
+    overflow-x: auto;
+    margin-top: 20px;
+}
+
+#booking-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#booking-table th {
+    background-color: #2c3e50;
+    color: white;
+    padding: 12px 15px;
+    text-align: left;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+#booking-table th i {
+    margin-right: 8px;
+}
+
+#booking-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #eee;
+    vertical-align: middle;
+}
+
+#booking-table tr:hover {
+    background-color: #f8f9fa;
+}
+
+/* Status Badges */
+.status-badge {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.status-confirmed {
+    background-color: rgba(46, 204, 113, 0.2);
+    color: #27ae60;
+}
+
+.status-upcoming {
+    background-color: rgba(52, 152, 219, 0.2);
+    color: #2980b9;
+}
+
+.status-checked-in {
+    background-color: rgba(155, 89, 182, 0.2);
+    color: #8e44ad;
+}
+
+.status-checked-out {
+    background-color: rgba(149, 165, 166, 0.2);
+    color: #7f8c8d;
+}
+
+.status-cancelled {
+    background-color: rgba(231, 76, 60, 0.2);
+    color: #c0392b;
+}
+
+/* Action Buttons */
+.actions {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-checkin, .btn-checkout, .btn-cancel {
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    border: none;
+}
+
+.btn-checkin {
+    background-color: rgba(46, 204, 113, 0.1);
+    color: #27ae60;
+    border: 1px solid rgba(46, 204, 113, 0.3);
+}
+
+.btn-checkin:hover {
+    background-color: rgba(46, 204, 113, 0.2);
+}
+
+.btn-checkout {
+    background-color: rgba(52, 152, 219, 0.1);
+    color: #2980b9;
+    border: 1px solid rgba(52, 152, 219, 0.3);
+}
+
+.btn-checkout:hover {
+    background-color: rgba(52, 152, 219, 0.2);
+}
+
+.btn-cancel {
+    background-color: rgba(231, 76, 60, 0.1);
+    color: #e74c3c;
+    border: 1px solid rgba(231, 76, 60, 0.3);
+}
+
+.btn-cancel:hover {
+    background-color: rgba(231, 76, 60, 0.2);
+}
+
+/* Modal Form Styles */
+#booking-form .form-row {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 15px;
+}
+
+#booking-form .form-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+#booking-form label {
+    font-weight: 500;
+    color: #2c3e50;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+#booking-form .select-input,
+#booking-form .date-input,
+#booking-form .number-input,
+#booking-form .textarea-input {
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+#booking-form .select-input:focus,
+#booking-form .date-input:focus,
+#booking-form .number-input:focus,
+#booking-form .textarea-input:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+#booking-form .textarea-input {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .booking-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    .booking-nav {
+        width: 100%;
+        overflow-x: auto;
+        padding-bottom: 10px;
+    }
+    
+    .booking-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .search-filter {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .search-input, .filter-select, .date-input {
+        width: 100%;
+    }
+    
+    #add-booking-btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    #booking-form .form-row {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    #booking-table th, #booking-table td {
+        padding: 8px 10px;
+        font-size: 14px;
+    }
+}
