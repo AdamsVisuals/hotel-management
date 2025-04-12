@@ -6,6 +6,7 @@
     <title>Hotel Management System | Admin Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="rooms.css">
 </head>
 <body>
     <div class="container">
@@ -120,94 +121,71 @@
                 </div>
             </nav>
 
-                <div class="container">
-                    <main class="main-contents">
-                        <!-- Room Management Content -->
-                        <div class="content-area" id="rooms">
-                            <div class="page-header">
-                                <h1>Room Management</h1>
-                            </div>
+                <div class="room-management-container">
+                    <header class="room-header">
+                        <h1>Room Management</h1>
+                        <nav class="room-nav">
+                            <a href="dashboard.html" class="nav-link">Dashboard</a>
+                            <a href="guest-management.html" class="nav-link">Guest Management</a>
+                        </nav>
+                    </header>
             
-                            <!-- Room Actions -->
-                            <div class="section-actions">
-                                <div class="search-filter">
-                                    <div class="search-box">
-                                        <i class="fas fa-search"></i>
-                                        <input type="text" id="roomSearch" placeholder="Search rooms...">
-                                    </div>
-                                    <select id="roomStatusFilter">
-                                        <option value="all">All Statuses</option>
-                                        <option value="available">Available</option>
-                                        <option value="occupied">Occupied</option>
-                                        <option value="maintenance">Maintenance</option>
-                                    </select>
-                                </div>
-                                <button id="addRoomBtn" class="btn btn-primary">
-                                    <i class="fas fa-plus"></i> Add Room
-                                </button>
+                    <main class="room-main">
+                        <div class="room-controls">
+                            <div class="search-filter">
+                                <input type="text" id="room-search" placeholder="Search rooms..." class="search-input">
+                                <select id="room-filter" class="filter-select">
+                                    <option value="all">All Rooms</option>
+                                    <option value="available">Available</option>
+                                    <option value="occupied">Occupied</option>
+                                    <option value="maintenance">Maintenance</option>
+                                </select>
                             </div>
+                            <button id="add-room-btn" class="btn-primary">Add New Room</button>
+                        </div>
             
-                            <!-- Rooms Table -->
-                            <div class="table-section">
-                                <div class="table-responsive">
-                                    <table class="data-table" id="roomsTable">
-                                        <thead>
-                                            <tr>
-                                                <th>Room No.</th>
-                                                <th>Type</th>
-                                                <th>Price/Night</th>
-                                                <th>Status</th>
-                                                <th>Actions</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <!-- Will be populated by JS -->
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
+                        <div id="rooms-list" class="room-cards-container">
+                            <!-- Rooms will be loaded here dynamically -->
                         </div>
                     </main>
-                </div>
             
-                <!-- Room Modal (for add/edit) -->
-                <div class="modal" id="roomModal">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h3 id="modalTitle">Add New Room</h3>
-                            <button class="close-modal">&times;</button>
-                        </div>
-                        <div class="modal-body">
-                            <form id="roomForm">
-                                <input type="hidden" id="roomId">
+                    <!-- Room Modal -->
+                    <div id="room-modal" class="modal">
+                        <div class="modal-content">
+                            <span class="close-modal">&times;</span>
+                            <h2 id="room-modal-title">Add New Room</h2>
+                            <form id="room-form">
+                                <input type="hidden" id="room-id">
                                 <div class="form-group">
-                                    <label for="roomNumber">Room Number *</label>
-                                    <input type="text" id="roomNumber" required>
+                                    <label for="room-number">Room Number</label>
+                                    <input type="text" id="room-number" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="roomType">Room Type *</label>
-                                    <select id="roomType" required>
-                                        <option value="standard">Standard</option>
-                                        <option value="deluxe">Deluxe</option>
+                                    <label for="room-type">Room Type</label>
+                                    <select id="room-type" required>
+                                        <option value="single">Single</option>
+                                        <option value="double">Double</option>
                                         <option value="suite">Suite</option>
+                                        <option value="deluxe">Deluxe</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="roomPrice">Price/Night ($) *</label>
-                                    <input type="number" id="roomPrice" min="0" step="0.01" required>
+                                    <label for="room-price">Price Per Night ($)</label>
+                                    <input type="number" id="room-price" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="roomStatus">Status *</label>
-                                    <select id="roomStatus" required>
+                                    <label for="room-status">Status</label>
+                                    <select id="room-status" required>
                                         <option value="available">Available</option>
                                         <option value="occupied">Occupied</option>
                                         <option value="maintenance">Maintenance</option>
                                     </select>
                                 </div>
-                                <div class="form-actions">
-                                    <button type="button" class="btn btn-outline close-modal">Cancel</button>
-                                    <button type="submit" class="btn btn-primary">Save Room</button>
+                                <div class="form-group">
+                                    <label for="room-description">Description</label>
+                                    <textarea id="room-description"></textarea>
                                 </div>
+                                <button type="submit" class="btn-primary">Save Room</button>
                             </form>
                         </div>
                     </div>
