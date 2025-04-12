@@ -1,5 +1,4 @@
-// Room Management Logic
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', () => {
     // DOM Elements
     const roomsList = document.getElementById('rooms-list');
     const roomForm = document.getElementById('room-form');
@@ -8,39 +7,58 @@ document.addEventListener('DOMContentLoaded', function() {
     const closeModal = document.querySelector('.close-modal');
     const roomSearch = document.getElementById('room-search');
     const roomFilter = document.getElementById('room-filter');
-    
-    // Initialize rooms data from localStorage or create empty array
+
+    // Rooms state
     let rooms = JSON.parse(localStorage.getItem('hotelRooms')) || [];
-    
-    // Display all rooms
+
+    // Load rooms on page load
+    displayRooms();
+
+    // Event Listeners
+    addRoomBtn.addEventListener('click', () => {
+        roomForm.reset();
+        document.getElementById('room-id').value = '';
+        document.getElementById('room-modal-title').textContent = 'Add New Room';
+        openRoomModal();
+    });
+
+    closeModal.addEventListener('click', closeRoomModal);
+
+    window.addEventListener('click', e => {
+        if (e.target === roomModal) closeRoomModal();
+    });
+
+    roomSearch.addEventListener('input', displayRooms);
+    roomFilter.addEventListener('change', displayRooms);
+
+    roomForm.addEventListener('submit', handleRoomSubmit);
+
+    // Functions
+
     function displayRooms() {
         const searchTerm = roomSearch.value.toLowerCase();
-        const filterValue = roomFilter.value;
-        
+        const filter = roomFilter.value;
+
         const filteredRooms = rooms.filter(room => {
-            const matchesSearch = 
+            const matchSearch =
                 room.number.toLowerCase().includes(searchTerm) ||
                 room.type.toLowerCase().includes(searchTerm) ||
                 room.description.toLowerCase().includes(searchTerm);
-            
-            const matchesFilter = filterValue === 'all' || room.status === filterValue;
-            
-            return matchesSearch && matchesFilter;
+
+            const matchFilter = filter === 'all' || room.status === filter;
+            return matchSearch && matchFilter;
         });
-        
-        roomsList.innerHTML = '';
-        
-        if (filteredRooms.length === 0) {
-            roomsList.innerHTML = '<p class="no-rooms">No rooms found</p>';
-            return;
-        }
-        
+
+        roomsList.innerHTML = filteredRooms.length
+            ? ''
+            : '<p class="no-rooms">No rooms found</p>';
+
         filteredRooms.forEach(room => {
             const roomCard = document.createElement('div');
             roomCard.className = 'room-card';
-            
+
             const statusClass = `status-${room.status}`;
-            
+
             roomCard.innerHTML = `
                 <div class="room-card-header">
                     <h3 class="room-card-title">Room ${room.number}</h3>
@@ -58,59 +76,59 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                 </div>
             `;
-            
+
             roomsList.appendChild(roomCard);
         });
-        
-        // Add event listeners to edit and delete buttons
-        document.querySelectorAll('.btn-edit').forEach(btn => {
-            btn.addEventListener('click', handleEditRoom);
-        });
-        
-        document.querySelectorAll('.btn-delete').forEach(btn => {
-            btn.addEventListener('click', handleDeleteRoom);
-        });
+
+        attachRoomActionListeners();
     }
-    
-    // Handle form submission (add/edit room)
-    roomForm.addEventListener('submit', function(e) {
+
+    function attachRoomActionListeners() {
+        document.querySelectorAll('.btn-edit').forEach(btn =>
+            btn.addEventListener('click', handleEditRoom)
+        );
+
+        document.querySelectorAll('.btn-delete').forEach(btn =>
+            btn.addEventListener('click', handleDeleteRoom)
+        );
+    }
+
+    function handleRoomSubmit(e) {
         e.preventDefault();
-        
+
         const roomId = document.getElementById('room-id').value;
         const roomData = {
-            number: document.getElementById('room-number').value,
-            type: document.getElementById('room-type').value,
-            price: document.getElementById('room-price').value,
+            number: document.getElementById('room-number').value.trim(),
+            type: document.getElementById('room-type').value.trim(),
+            price: parseFloat(document.getElementById('room-price').value),
             status: document.getElementById('room-status').value,
-            description: document.getElementById('room-description').value
+            description: document.getElementById('room-description').value.trim()
         };
-        
+
+        if (!roomData.number || !roomData.type || isNaN(roomData.price)) {
+            alert('Please fill in all required fields correctly.');
+            return;
+        }
+
         if (roomId) {
-            // Update existing room
             const index = rooms.findIndex(r => r.id === roomId);
-            if (index !== -1) {
-                rooms[index] = { ...rooms[index], ...roomData };
-            }
+            if (index !== -1) rooms[index] = { ...rooms[index], ...roomData };
         } else {
-            // Add new room
             const newRoom = {
                 id: Date.now().toString(),
                 ...roomData
             };
             rooms.push(newRoom);
         }
-        
-        // Save to localStorage and refresh display
-        localStorage.setItem('hotelRooms', JSON.stringify(rooms));
-        displayRooms();
+
+        updateStorageAndDisplay();
         closeRoomModal();
-    });
-    
-    // Handle edit room
+    }
+
     function handleEditRoom(e) {
-        const roomId = e.target.getAttribute('data-id');
+        const roomId = e.target.dataset.id;
         const room = rooms.find(r => r.id === roomId);
-        
+
         if (room) {
             document.getElementById('room-modal-title').textContent = 'Edit Room';
             document.getElementById('room-id').value = room.id;
@@ -119,53 +137,31 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('room-price').value = room.price;
             document.getElementById('room-status').value = room.status;
             document.getElementById('room-description').value = room.description || '';
-            
+
             openRoomModal();
         }
     }
-    
-    // Handle delete room
+
     function handleDeleteRoom(e) {
-        const roomId = e.target.getAttribute('data-id');
-        
+        const roomId = e.target.dataset.id;
+
         if (confirm('Are you sure you want to delete this room?')) {
             rooms = rooms.filter(room => room.id !== roomId);
-            localStorage.setItem('hotelRooms', JSON.stringify(rooms));
-            displayRooms();
+            updateStorageAndDisplay();
         }
     }
-    
-    // Open modal for adding new room
-    addRoomBtn.addEventListener('click', function() {
-        document.getElementById('room-modal-title').textContent = 'Add New Room';
-        document.getElementById('room-id').value = '';
-        roomForm.reset();
-        openRoomModal();
-    });
-    
-    // Close modal
-    closeModal.addEventListener('click', closeRoomModal);
-    
-    // Close modal when clicking outside
-    window.addEventListener('click', function(e) {
-        if (e.target === roomModal) {
-            closeRoomModal();
-        }
-    });
-    
-    // Search and filter functionality
-    roomSearch.addEventListener('input', displayRooms);
-    roomFilter.addEventListener('change', displayRooms);
-    
-    // Helper functions
+
+    function updateStorageAndDisplay() {
+        localStorage.setItem('hotelRooms', JSON.stringify(rooms));
+        displayRooms();
+    }
+
     function openRoomModal() {
-        roomModal.style.display = 'flex';
+        roomModal.classList.add('active');
+        roomModal.classList.add('fade-in');
     }
-    
+
     function closeRoomModal() {
-        roomModal.style.display = 'none';
+        roomModal.classList.remove('active');
     }
-    
-    // Initial display
-    displayRooms();
 });

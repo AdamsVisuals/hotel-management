@@ -120,28 +120,37 @@
                     </div>
                 </div>
             </nav>
-
+            
+            <body>
                 <div class="room-management-container">
                     <header class="room-header">
-                        <h1>Room Management</h1>
+                        <h1><i class="fas fa-door-open"></i> Room Management</h1>
                         <nav class="room-nav">
-                            <a href="dashboard.html" class="nav-link">Dashboard</a>
-                            <a href="guest-management.html" class="nav-link">Guest Management</a>
+                            <a href="dashboard.html" class="nav-link"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                            <a href="guest-management.html" class="nav-link"><i class="fas fa-users"></i> Guest Management</a>
                         </nav>
                     </header>
             
                     <main class="room-main">
                         <div class="room-controls">
                             <div class="search-filter">
-                                <input type="text" id="room-search" placeholder="Search rooms..." class="search-input">
-                                <select id="room-filter" class="filter-select">
-                                    <option value="all">All Rooms</option>
-                                    <option value="available">Available</option>
-                                    <option value="occupied">Occupied</option>
-                                    <option value="maintenance">Maintenance</option>
-                                </select>
+                                <div class="search-box">
+                                    <i class="fas fa-search"></i>
+                                    <input type="text" id="room-search" placeholder="Search rooms..." class="search-input">
+                                </div>
+                                <div class="filter-box">
+                                    <i class="fas fa-filter"></i>
+                                    <select id="room-filter" class="filter-select">
+                                        <option value="all">All Rooms</option>
+                                        <option value="available">Available</option>
+                                        <option value="occupied">Occupied</option>
+                                        <option value="maintenance">Maintenance</option>
+                                    </select>
+                                </div>
                             </div>
-                            <button id="add-room-btn" class="btn-primary">Add New Room</button>
+                            <button id="add-room-btn" class="btn-primary">
+                                <i class="fas fa-plus-circle"></i> Add New Room
+                            </button>
                         </div>
             
                         <div id="rooms-list" class="room-cards-container">
@@ -153,15 +162,15 @@
                     <div id="room-modal" class="modal">
                         <div class="modal-content">
                             <span class="close-modal">&times;</span>
-                            <h2 id="room-modal-title">Add New Room</h2>
+                            <h2 id="room-modal-title"><i class="fas fa-door-closed"></i> Add New Room</h2>
                             <form id="room-form">
                                 <input type="hidden" id="room-id">
                                 <div class="form-group">
-                                    <label for="room-number">Room Number</label>
+                                    <label for="room-number"><i class="fas fa-hashtag"></i> Room Number</label>
                                     <input type="text" id="room-number" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="room-type">Room Type</label>
+                                    <label for="room-type"><i class="fas fa-bed"></i> Room Type</label>
                                     <select id="room-type" required>
                                         <option value="single">Single</option>
                                         <option value="double">Double</option>
@@ -170,11 +179,11 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="room-price">Price Per Night ($)</label>
+                                    <label for="room-price"><i class="fas fa-dollar-sign"></i> Price Per Night</label>
                                     <input type="number" id="room-price" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="room-status">Status</label>
+                                    <label for="room-status"><i class="fas fa-info-circle"></i> Status</label>
                                     <select id="room-status" required>
                                         <option value="available">Available</option>
                                         <option value="occupied">Occupied</option>
@@ -182,10 +191,12 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="room-description">Description</label>
+                                    <label for="room-description"><i class="fas fa-align-left"></i> Description</label>
                                     <textarea id="room-description"></textarea>
                                 </div>
-                                <button type="submit" class="btn-primary">Save Room</button>
+                                <button type="submit" class="btn-primary">
+                                    <i class="fas fa-save"></i> Save Room
+                                </button>
                             </form>
                         </div>
                     </div>
