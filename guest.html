@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Management System | Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-container">
+                    <img src="images/HMS LOGO TRANSPARENT.png" alt="Hotel Logo" class="logo">
+                    <h2>Hotel Admin</h2>
+                </div>
+                <button class="close-sidebar" id="close-sidebar">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <ul class="sidebar-menu">
+                <li class="active">
+                    <a href="index.html">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="rooms.html">
+                        <i class="fas fa-bed"></i>
+                        <span>Room Management</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#guests">
+                        <i class="fas fa-users"></i>
+                        <span>Guest Management</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#bookings">
+                        <i class="fas fa-calendar-check"></i>
+                        <span>Booking Management</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#staff">
+                        <i class="fas fa-user-tie"></i>
+                        <span>Staff Management</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#reports">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Reports</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#settings">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+            </ul>
+            
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <img src="https://via.placeholder.com/40x40" alt="Admin Profile">
+                    <div>
+                        <h4>Admin User</h4>
+                        <small>Super Admin</small>
+                    </div>
+                </div>
+                <a href="#logout" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Navigation -->
+            <nav class="top-nav">
+                <div class="left-nav">
+                    <button class="toggle-sidebar" id="toggle-sidebar">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Search...">
+                    </div>
+                </div>
+                <div class="right-nav">
+                    <div class="notifications">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge">3</span>
+                    </div>
+                    <div class="messages">
+                        <i class="fas fa-envelope"></i>
+                        <span class="message-badge">5</span>
+                    </div>
+                    <div class="user-nav">
+                        <div class="user-dropdown">
+                            <div class="user-dropdown-toggle">
+                                <img src="https://via.placeholder.com/40x40" alt="User Profile" id="userAvatar">
+                                <span id="userName">Admin</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                            <div class="user-dropdown-menu">
+                                <a href="#profile"><i class="fas fa-user"></i> My Profile</a>
+                                <a href="#settings"><i class="fas fa-cog"></i> Settings</a>
+                                <div class="dropdown-divider"></div>
+                                <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+    <div class="container">
+        <main class="main-content">
+            <!-- Guest Management Content -->
+            <div class="content-area" id="guests">
+                <div class="page-header">
+                    <h1>Guest Management</h1>
+                    <div class="breadcrumb">
+                        <a href="index.html">Dashboard</a> / <span>Guests</span>
+                    </div>
+                </div>
+
+                <!-- Guest Actions -->
+                <div class="section-actions">
+                    <div class="search-filter">
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="guestSearch" placeholder="Search guests...">
+                        </div>
+                        <select id="guestStatusFilter">
+                            <option value="all">All Guests</option>
+                            <option value="checked-in">Checked In</option>
+                            <option value="checked-out">Checked Out</option>
+                            <option value="vip">VIP Guests</option>
+                        </select>
+                    </div>
+                    <button id="addGuestBtn" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Add Guest
+                    </button>
+                </div>
+
+                <!-- Guest Summary Cards -->
+                <div class="summary-cards">
+                    <div class="summary-card">
+                        <div class="summary-icon bg-primary">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="summary-info">
+                            <h3 id="totalGuests">0</h3>
+                            <p>Total Guests</p>
+                        </div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="summary-icon bg-success">
+                            <i class="fas fa-door-open"></i>
+                        </div>
+                        <div class="summary-info">
+                            <h3 id="checkedInGuests">0</h3>
+                            <p>Checked In</p>
+                        </div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="summary-icon bg-warning">
+                            <i class="fas fa-door-closed"></i>
+                        </div>
+                        <div class="summary-info">
+                            <h3 id="checkedOutGuests">0</h3>
+                            <p>Checked Out</p>
+                        </div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="summary-icon bg-danger">
+                            <i class="fas fa-crown"></i>
+                        </div>
+                        <div class="summary-info">
+                            <h3 id="vipGuests">0</h3>
+                            <p>VIP Guests</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Guests Table -->
+                <div class="table-section">
+                    <div class="table-responsive">
+                        <table class="data-table" id="guestsTable">
+                            <thead>
+                                <tr>
+                                    <th>Guest</th>
+                                    <th>Contact</th>
+                                    <th>Room</th>
+                                    <th>Check-In</th>
+                                    <th>Check-Out</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Will be populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="table-footer">
+                        <div class="table-pagination" id="guestsPagination">
+                            <!-- Pagination will be added here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Guest Modal (for add/edit) -->
+    <div class="modal" id="guestModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="guestModalTitle">Add New Guest</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="guestForm">
+                    <input type="hidden" id="guestId">
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">First Name *</label>
+                            <input type="text" id="firstName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name *</label>
+                            <input type="text" id="lastName" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="email">Email *</label>
+                            <input type="email" id="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone *</label>
+                            <input type="tel" id="phone" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="idType">ID Type *</label>
+                            <select id="idType" required>
+                                <option value="passport">Passport</option>
+                                <option value="driver-license">Driver's License</option>
+                                <option value="national-id">National ID</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="idNumber">ID Number *</label>
+                            <input type="text" id="idNumber" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="roomNumber">Room Number *</label>
+                            <select id="roomNumber" required>
+                                <!-- Will be populated by JS -->
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="guestType">Guest Type *</label>
+                            <select id="guestType" required>
+                                <option value="regular">Regular</option>
+                                <option value="vip">VIP</option>
+                                <option value="group">Group</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="checkInDate">Check-In Date *</label>
+                            <input type="date" id="checkInDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="checkOutDate">Check-Out Date *</label>
+                            <input type="date" id="checkOutDate" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="specialRequests">Special Requests</label>
+                        <textarea id="specialRequests" rows="3"></textarea>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-outline close-modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save Guest</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="guest.js"></script>
+</body>
+</html>
