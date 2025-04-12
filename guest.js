@@ -1,114 +1,74 @@
 document.addEventListener('DOMContentLoaded', function() {
     // DOM Elements
-    const guestSearch = document.getElementById('guestSearch');
-    const guestStatusFilter = document.getElementById('guestStatusFilter');
     const addGuestBtn = document.getElementById('addGuestBtn');
-    const guestsTable = document.getElementById('guestsTable').querySelector('tbody');
     const guestModal = document.getElementById('guestModal');
     const guestForm = document.getElementById('guestForm');
-    const guestModalTitle = document.getElementById('guestModalTitle');
+    const modalTitle = document.getElementById('modalTitle');
     const closeModalBtns = document.querySelectorAll('.close-modal');
-
-    // Guest data and filters
-    let guests = [];
-    let rooms = [];
+    const guestSearch = document.getElementById('guestSearch');
+    const guestFilter = document.getElementById('guestFilter');
+    const guestsTable = document.getElementById('guestsTable').querySelector('tbody');
+    const refreshBtn = document.getElementById('refreshBtn');
+    const roomNumberSelect = document.getElementById('roomNumber');
+    
+    // Guest data and pagination
+    let guests = JSON.parse(localStorage.getItem('hotelGuests')) || [];
+    let rooms = JSON.parse(localStorage.getItem('hotelRooms')) || [
+        { roomNumber: '101', type: 'standard', status: 'available' },
+        { roomNumber: '102', type: 'standard', status: 'available' },
+        { roomNumber: '201', type: 'deluxe', status: 'available' },
+        { roomNumber: '202', type: 'deluxe', status: 'available' },
+        { roomNumber: '301', type: 'suite', status: 'available' }
+    ];
+    
     let currentPage = 1;
     const guestsPerPage = 10;
-
-    // Initialize guest management
+    
+    // Initialize the page
     initGuestManagement();
-
-    // Event listeners
-    guestSearch.addEventListener('input', filterGuests);
-    guestStatusFilter.addEventListener('change', filterGuests);
+    
+    // Event Listeners
     addGuestBtn.addEventListener('click', () => openGuestModal());
-    closeModalBtns.forEach(btn => btn.addEventListener('click', () => closeGuestModal()));
+    closeModalBtns.forEach(btn => btn.addEventListener('click', closeGuestModal));
     guestForm.addEventListener('submit', handleGuestSubmit);
-
+    guestSearch.addEventListener('input', filterGuests);
+    guestFilter.addEventListener('change', filterGuests);
+    refreshBtn.addEventListener('click', initGuestManagement);
+    
     // Initialize guest management
-    async function initGuestManagement() {
-        await fetchRooms();
-        await fetchGuests();
-        updateSummaryCards();
+    function initGuestManagement() {
+        updateRoomNumberSelect();
+        updateStats();
+        renderGuestsTable();
+        renderPagination();
     }
-
-    // Fetch guests from API
-    async function fetchGuests() {
-        try {
-            // In a real app, this would be an API call
-            // Mock data for demonstration
-            guests = [
-                {
-                    id: 1,
-                    firstName: 'John',
-                    lastName: 'Doe',
-                    email: 'john.doe@example.com',
-                    phone: '+1 555-123-4567',
-                    idType: 'passport',
-                    idNumber: 'AB1234567',
-                    roomNumber: '101',
-                    guestType: 'regular',
-                    checkInDate: '2023-06-15',
-                    checkOutDate: '2023-06-20',
-                    status: 'checked-in',
-                    specialRequests: 'Extra pillows please'
-                },
-                {
-                    id: 2,
-                    firstName: 'Jane',
-                    lastName: 'Smith',
-                    email: 'jane.smith@example.com',
-                    phone: '+1 555-987-6543',
-                    idType: 'driver-license',
-                    idNumber: 'DL87654321',
-                    roomNumber: '201',
-                    guestType: 'vip',
-                    checkInDate: '2023-06-10',
-                    checkOutDate: '2023-06-18',
-                    status: 'checked-in',
-                    specialRequests: 'Champagne in room on arrival'
-                },
-                {
-                    id: 3,
-                    firstName: 'Robert',
-                    lastName: 'Johnson',
-                    email: 'robert.j@example.com',
-                    phone: '+1 555-456-7890',
-                    idType: 'national-id',
-                    idNumber: 'ID987654',
-                    roomNumber: '301',
-                    guestType: 'regular',
-                    checkInDate: '2023-06-05',
-                    checkOutDate: '2023-06-12',
-                    status: 'checked-out',
-                    specialRequests: ''
-                }
-            ];
-            
-            renderGuestsTable();
-            renderPagination();
-        } catch (error) {
-            showAlert('error', 'Failed to load guests: ' + error.message);
-        }
+    
+    // Save data to localStorage
+    function saveData() {
+        localStorage.setItem('hotelGuests', JSON.stringify(guests));
+        localStorage.setItem('hotelRooms', JSON.stringify(rooms));
     }
-
-    // Fetch rooms from API
-    async function fetchRooms() {
-        try {
-            // In a real app, this would be an API call
-            // Mock data for demonstration
-            rooms = [
-                { roomNumber: '101', type: 'standard', status: 'occupied' },
-                { roomNumber: '201', type: 'deluxe', status: 'occupied' },
-                { roomNumber: '301', type: 'suite', status: 'available' },
-                { roomNumber: '102', type: 'standard', status: 'available' },
-                { roomNumber: '202', type: 'deluxe', status: 'maintenance' }
-            ];
-        } catch (error) {
-            showAlert('error', 'Failed to load rooms: ' + error.message);
-        }
+    
+    // Update room number select options
+    function updateRoomNumberSelect(selectedRoom = '') {
+        roomNumberSelect.innerHTML = '<option value="">Select Room</option>';
+        
+        // Add available rooms
+        const availableRooms = rooms.filter(room => 
+            room.status === 'available' || room.roomNumber === selectedRoom
+        );
+        
+        availableRooms.forEach(room => {
+            const option = document.createElement('option');
+            option.value = room.roomNumber;
+            option.textContent = `${room.roomNumber} (${room.type})`;
+            if (room.roomNumber === selectedRoom) {
+                option.selected = true;
+            }
+            roomNumberSelect.appendChild(option);
+        });
     }
-
+    
     // Render guests table
     function renderGuestsTable(filteredGuests = guests) {
         guestsTable.innerHTML = '';
@@ -128,29 +88,26 @@ document.addEventListener('DOMContentLoaded', function() {
             const row = document.createElement('tr');
             row.innerHTML = `
                 <td>
-                    <div class="guest-info">
+                    <div class="guest-info-cell">
                         <div class="guest-name">${guest.firstName} ${guest.lastName}</div>
                         <small class="guest-type ${guest.guestType}">${formatGuestType(guest.guestType)}</small>
                     </div>
                 </td>
                 <td>
-                    <div class="guest-contact">
-                        <div>${guest.email}</div>
-                        <small>${guest.phone}</small>
-                    </div>
+                    <div class="guest-contact">${guest.email}<br>${guest.phone}</div>
                 </td>
                 <td>${guest.roomNumber}</td>
-                <td>${formatDate(guest.checkInDate)}</td>
-                <td>${formatDate(guest.checkOutDate)}</td>
+                <td>${formatDateTime(guest.checkInDate)}</td>
+                <td>${guest.status === 'checked-out' ? formatDateTime(guest.checkOutDate) : '--'}</td>
                 <td><span class="status-badge status-${guest.status}">${formatStatus(guest.status)}</span></td>
-                <td class="table-actions">
+                <td class="table-actions-cell">
                     <button class="btn-icon btn-edit" data-id="${guest.id}">
                         <i class="fas fa-edit"></i>
                     </button>
                     <button class="btn-icon btn-delete" data-id="${guest.id}">
                         <i class="fas fa-trash"></i>
                     </button>
-                    ${guest.status === 'checked-in' ? `
+                    ${guest.status === 'current' ? `
                     <button class="btn-icon btn-checkout" data-id="${guest.id}">
                         <i class="fas fa-sign-out-alt"></i>
                     </button>
@@ -173,18 +130,19 @@ document.addEventListener('DOMContentLoaded', function() {
             btn.addEventListener('click', () => checkoutGuest(parseInt(btn.dataset.id)));
         });
     }
-
+    
     // Paginate guests
-    function paginateGuests(guests) {
+    function paginateGuests(guestsData) {
         const startIndex = (currentPage - 1) * guestsPerPage;
-        return guests.slice(startIndex, startIndex + guestsPerPage);
+        return guestsData.slice(startIndex, startIndex + guestsPerPage);
     }
-
+    
     // Render pagination
     function renderPagination(filteredGuests = guests) {
-        const totalPages = Math.ceil(filteredGuests.length / guestsPerPage);
-        const pagination = document.getElementById('guestsPagination');
+        const pagination = document.getElementById('pagination');
         pagination.innerHTML = '';
+        
+        const totalPages = Math.ceil(filteredGuests.length / guestsPerPage);
         
         if (totalPages <= 1) return;
         
@@ -203,7 +161,10 @@ document.addEventListener('DOMContentLoaded', function() {
         pagination.appendChild(prevBtn);
         
         // Page buttons
-        for (let i = 1; i <= totalPages; i++) {
+        const startPage = Math.max(1, currentPage - 2);
+        const endPage = Math.min(totalPages, currentPage + 2);
+        
+        for (let i = startPage; i <= endPage; i++) {
             const pageBtn = document.createElement('button');
             pageBtn.className = `page-btn ${i === currentPage ? 'active' : ''}`;
             pageBtn.textContent = i;
@@ -229,53 +190,56 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         pagination.appendChild(nextBtn);
     }
-
+    
     // Filter guests
     function filterGuests() {
         const searchTerm = guestSearch.value.toLowerCase();
-        const statusFilter = guestStatusFilter.value;
+        const filterValue = guestFilter.value;
         
-        const filteredGuests = guests.filter(guest => {
-            const matchesSearch = 
+        let filteredGuests = guests;
+        
+        // Apply search filter
+        if (searchTerm) {
+            filteredGuests = filteredGuests.filter(guest => 
                 guest.firstName.toLowerCase().includes(searchTerm) ||
                 guest.lastName.toLowerCase().includes(searchTerm) ||
                 guest.email.toLowerCase().includes(searchTerm) ||
-                guest.phone.toLowerCase().includes(searchTerm) ||
-                guest.roomNumber.toLowerCase().includes(searchTerm);
-            
-            const matchesStatus = 
-                statusFilter === 'all' || 
-                (statusFilter === 'checked-in' && guest.status === 'checked-in') ||
-                (statusFilter === 'checked-out' && guest.status === 'checked-out') ||
-                (statusFilter === 'vip' && guest.guestType === 'vip');
-            
-            return matchesSearch && matchesStatus;
-        });
+                guest.phone.includes(searchTerm) ||
+                guest.roomNumber.includes(searchTerm)
+            );
+        }
+        
+        // Apply status filter
+        if (filterValue !== 'all') {
+            filteredGuests = filteredGuests.filter(guest => {
+                if (filterValue === 'current') return guest.status === 'current';
+                if (filterValue === 'checked-out') return guest.status === 'checked-out';
+                if (filterValue === 'vip') return guest.guestType === 'vip';
+                return true;
+            });
+        }
         
         currentPage = 1;
         renderGuestsTable(filteredGuests);
         renderPagination(filteredGuests);
     }
-
-    // Update summary cards
-    function updateSummaryCards() {
+    
+    // Update statistics cards
+    function updateStats() {
         document.getElementById('totalGuests').textContent = guests.length;
-        document.getElementById('checkedInGuests').textContent = 
-            guests.filter(g => g.status === 'checked-in').length;
-        document.getElementById('checkedOutGuests').textContent = 
-            guests.filter(g => g.status === 'checked-out').length;
-        document.getElementById('vipGuests').textContent = 
-            guests.filter(g => g.guestType === 'vip').length;
+        document.getElementById('currentGuests').textContent = guests.filter(g => g.status === 'current').length;
+        document.getElementById('checkedOutGuests').textContent = guests.filter(g => g.status === 'checked-out').length;
+        document.getElementById('vipGuests').textContent = guests.filter(g => g.guestType === 'vip').length;
     }
-
-    // Open guest modal for adding/editing
+    
+    // Open guest modal
     function openGuestModal(guestId = null) {
         if (guestId) {
             // Edit mode
             const guest = guests.find(g => g.id === guestId);
             if (!guest) return;
             
-            guestModalTitle.textContent = 'Edit Guest';
+            modalTitle.textContent = 'Edit Guest';
             document.getElementById('guestId').value = guest.id;
             document.getElementById('firstName').value = guest.firstName;
             document.getElementById('lastName').value = guest.lastName;
@@ -284,164 +248,206 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('idType').value = guest.idType;
             document.getElementById('idNumber').value = guest.idNumber;
             document.getElementById('guestType').value = guest.guestType;
-            document.getElementById('checkInDate').value = guest.checkInDate;
-            document.getElementById('checkOutDate').value = guest.checkOutDate;
             document.getElementById('specialRequests').value = guest.specialRequests || '';
             
-            // Set room number options
+            // Format dates for datetime-local input
+            document.getElementById('checkInDate').value = formatDateTimeForInput(guest.checkInDate);
+            document.getElementById('checkOutDate').value = guest.checkOutDate ? formatDateTimeForInput(guest.checkOutDate) : '';
+            
+            // Update room select
             updateRoomNumberSelect(guest.roomNumber);
         } else {
             // Add mode
-            guestModalTitle.textContent = 'Add New Guest';
+            modalTitle.textContent = 'Add New Guest';
             guestForm.reset();
             document.getElementById('guestId').value = '';
+            document.getElementById('checkInDate').value = formatDateTimeForInput(new Date().toISOString());
             
-            // Set room number options
+            // Update room select
             updateRoomNumberSelect();
         }
         
         guestModal.classList.add('active');
     }
-
-    // Update room number select options
-    function updateRoomNumberSelect(selectedRoom = '') {
-        const roomNumberSelect = document.getElementById('roomNumber');
-        roomNumberSelect.innerHTML = '';
-        
-        // Add available rooms
-        const availableRooms = rooms.filter(room => 
-            room.status === 'available' || room.roomNumber === selectedRoom
-        );
-        
-        if (availableRooms.length === 0) {
-            roomNumberSelect.innerHTML = '<option value="">No available rooms</option>';
-            return;
-        }
-        
-        availableRooms.forEach(room => {
-            const option = document.createElement('option');
-            option.value = room.roomNumber;
-            option.textContent = `${room.roomNumber} (${room.type})`;
-            option.selected = room.roomNumber === selectedRoom;
-            roomNumberSelect.appendChild(option);
-        });
-    }
-
+    
     // Close guest modal
     function closeGuestModal() {
         guestModal.classList.remove('active');
     }
-
+    
     // Handle guest form submission
-    async function handleGuestSubmit(e) {
+    function handleGuestSubmit(e) {
         e.preventDefault();
         
         const guestId = document.getElementById('guestId').value;
-        const guestData = {
-            firstName: document.getElementById('firstName').value,
-            lastName: document.getElementById('lastName').value,
-            email: document.getElementById('email').value,
-            phone: document.getElementById('phone').value,
-            idType: document.getElementById('idType').value,
-            idNumber: document.getElementById('idNumber').value,
-            roomNumber: document.getElementById('roomNumber').value,
-            guestType: document.getElementById('guestType').value,
-            checkInDate: document.getElementById('checkInDate').value,
-            checkOutDate: document.getElementById('checkOutDate').value,
-            specialRequests: document.getElementById('specialRequests').value,
-            status: 'checked-in' // Default status for new guests
-        };
+        const formData = new FormData(guestForm);
+        const guestData = Object.fromEntries(formData.entries());
+        
+        // Validate required fields
+        if (!guestData.firstName || !guestData.lastName || !guestData.email || 
+            !guestData.phone || !guestData.roomNumber || !guestData.checkInDate) {
+            showAlert('error', 'Please fill in all required fields');
+            return;
+        }
+        
+        // Validate check-out date is after check-in if provided
+        if (guestData.checkOutDate && new Date(guestData.checkOutDate) <= new Date(guestData.checkInDate)) {
+            showAlert('error', 'Check-out date must be after check-in date');
+            return;
+        }
         
         try {
             if (guestId) {
                 // Update existing guest
                 const index = guests.findIndex(g => g.id === parseInt(guestId));
-                guests[index] = { ...guests[index], ...guestData };
-            } else {
-                // Create new guest
-                const newId = guests.length > 0 ? Math.max(...guests.map(g => g.id)) + 1 : 1;
-                guests.push({ id: newId, ...guestData });
-                
-                // Update room status to occupied
-                const roomIndex = rooms.findIndex(r => r.roomNumber === guestData.roomNumber);
-                if (roomIndex !== -1) {
-                    rooms[roomIndex].status = 'occupied';
+                if (index !== -1) {
+                    // Free up the old room if changing rooms
+                    if (guests[index].roomNumber !== guestData.roomNumber) {
+                        freeRoom(guests[index].roomNumber);
+                        occupyRoom(guestData.roomNumber);
+                    }
+                    
+                    guests[index] = { 
+                        ...guests[index],
+                        ...guestData,
+                        id: parseInt(guestId),
+                        checkInDate: new Date(guestData.checkInDate).toISOString(),
+                        checkOutDate: guestData.checkOutDate ? new Date(guestData.checkOutDate).toISOString() : null,
+                        status: guestData.status || 'current'
+                    };
+                    
+                    showAlert('success', 'Guest updated successfully');
                 }
+            } else {
+                // Add new guest
+                const newId = guests.length > 0 ? Math.max(...guests.map(g => g.id)) + 1 : 1;
+                
+                // Occupy the room
+                occupyRoom(guestData.roomNumber);
+                
+                guests.unshift({ 
+                    id: newId,
+                    ...guestData,
+                    status: 'current',
+                    checkInDate: new Date(guestData.checkInDate).toISOString(),
+                    checkOutDate: guestData.checkOutDate ? new Date(guestData.checkOutDate).toISOString() : null
+                });
+                
+                showAlert('success', 'Guest added successfully');
             }
             
             closeGuestModal();
-            await fetchGuests(); // In real app, this would be API call
-            updateSummaryCards();
-            showAlert('success', `Guest ${guestId ? 'updated' : 'added'} successfully`);
+            saveData();
+            updateStats();
+            renderGuestsTable();
+            renderPagination();
         } catch (error) {
-            showAlert('error', error.message);
+            showAlert('error', 'Error saving guest: ' + error.message);
         }
     }
-
+    
+    // Mark a room as occupied
+    function occupyRoom(roomNumber) {
+        const roomIndex = rooms.findIndex(r => r.roomNumber === roomNumber);
+        if (roomIndex !== -1) {
+            rooms[roomIndex].status = 'occupied';
+            saveData();
+        }
+    }
+    
+    // Mark a room as available
+    function freeRoom(roomNumber) {
+        const roomIndex = rooms.findIndex(r => r.roomNumber === roomNumber);
+        if (roomIndex !== -1) {
+            rooms[roomIndex].status = 'available';
+            saveData();
+        }
+    }
+    
     // Edit guest
     function editGuest(guestId) {
         openGuestModal(guestId);
     }
-
+    
     // Delete guest
     function deleteGuest(guestId) {
-        if (!confirm('Are you sure you want to delete this guest?')) return;
-        
-        guests = guests.filter(guest => guest.id !== guestId);
-        renderGuestsTable();
-        updateSummaryCards();
-        showAlert('success', 'Guest deleted successfully');
-    }
-
-    // Checkout guest
-    function checkoutGuest(guestId) {
-        if (!confirm('Checkout this guest?')) return;
-        
-        const guestIndex = guests.findIndex(g => g.id === guestId);
-        if (guestIndex !== -1) {
-            guests[guestIndex].status = 'checked-out';
-            
-            // Update room status to available
-            const roomNumber = guests[guestIndex].roomNumber;
-            const roomIndex = rooms.findIndex(r => r.roomNumber === roomNumber);
-            if (roomIndex !== -1) {
-                rooms[roomIndex].status = 'available';
+        if (confirm('Are you sure you want to delete this guest?')) {
+            const guest = guests.find(g => g.id === guestId);
+            if (guest) {
+                // Free up the room
+                freeRoom(guest.roomNumber);
+                
+                // Remove the guest
+                guests = guests.filter(g => g.id !== guestId);
+                
+                saveData();
+                updateStats();
+                renderGuestsTable();
+                renderPagination();
+                showAlert('success', 'Guest deleted successfully');
             }
-            
-            renderGuestsTable();
-            updateSummaryCards();
-            showAlert('success', 'Guest checked out successfully');
         }
     }
-
+    
+    // Checkout guest
+    function checkoutGuest(guestId) {
+        if (confirm('Checkout this guest?')) {
+            const guest = guests.find(g => g.id === guestId);
+            if (guest) {
+                // Free up the room
+                freeRoom(guest.roomNumber);
+                
+                // Update guest status
+                guest.status = 'checked-out';
+                guest.checkOutDate = new Date().toISOString();
+                
+                saveData();
+                updateStats();
+                renderGuestsTable();
+                showAlert('success', 'Guest checked out successfully');
+            }
+        }
+    }
+    
     // Helper functions
-    function formatDate(dateString) {
-        if (!dateString) return 'N/A';
-        const options = { year: 'numeric', month: 'short', day: 'numeric' };
-        return new Date(dateString).toLocaleDateString(undefined, options);
+    function formatDateTime(dateString) {
+        if (!dateString) return '--';
+        const options = { 
+            year: 'numeric', 
+            month: 'short', 
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        };
+        return new Date(dateString).toLocaleString(undefined, options);
     }
-
+    
+    function formatDateTimeForInput(dateString) {
+        if (!dateString) return '';
+        const date = new Date(dateString);
+        const localDate = new Date(date.getTime() - (date.getTimezoneOffset() * 60000));
+        return localDate.toISOString().slice(0, 16);
+    }
+    
     function formatStatus(status) {
-        return status.split('-').map(word => 
-            word.charAt(0).toUpperCase() + word.slice(1)
-        ).join(' ');
+        return status === 'current' ? 'Checked In' : 'Checked Out';
     }
-
+    
     function formatGuestType(type) {
         return type.toUpperCase();
     }
-
+    
     function showAlert(type, message) {
         const alert = document.createElement('div');
-        alert.className = `alert alert-${type} show`;
+        alert.className = `alert alert-${type}`;
         alert.innerHTML = `
-            <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+            <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
             <span>${message}</span>
         `;
         document.body.appendChild(alert);
         
         setTimeout(() => {
-            alert.classList.remove('show');
+            alert.classList.add('fade-out');
             setTimeout(() => alert.remove(), 300);
         }, 3000);
     }

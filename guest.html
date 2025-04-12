@@ -6,6 +6,7 @@
     <title>Hotel Management System | Admin Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="guest.css">
 </head>
 <body>
     <div class="container">
@@ -119,196 +120,208 @@
                     </div>
                 </div>
             </nav>
-
-    <div class="container">
-        <main class="main-content">
-            <!-- Guest Management Content -->
-            <div class="content-area" id="guests">
-                <div class="page-header">
-                    <h1>Guest Management</h1>
-                    <div class="breadcrumb">
-                        <a href="index.html">Dashboard</a> / <span>Guests</span>
+            
+                    <main class="main-contents">
+                        <header class="content-header">
+                            <div>
+                                <h1>Guest Management</h1>
+                                <div class="breadcrumb">
+                                    <a href="dashboard.html">Home</a> / <span>Guests</span>
+                                </div>
+                            </div>
+                            <div class="header-actions">
+                                <div class="search-box">
+                                    <i class="fas fa-search"></i>
+                                    <input type="text" id="guestSearch" placeholder="Search guests...">
+                                </div>
+                                <button id="addGuestBtn" class="btn btn-primary">
+                                    <i class="fas fa-plus"></i> Add Guest
+                                </button>
+                            </div>
+                        </header>
+            
+                        <!-- Realtime Updates Notification -->
+                        <div class="realtime-notification" id="realtimeNotification">
+                            <i class="fas fa-sync-alt"></i>
+                            <span>Realtime updates enabled</span>
+                        </div>
+            
+                        <!-- Guest Stats Cards -->
+                        <div class="stats-cards">
+                            <div class="stat-card">
+                                <div class="stat-icon bg-primary">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <h3 id="totalGuests">0</h3>
+                                    <p>Total Guests</p>
+                                </div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon bg-success">
+                                    <i class="fas fa-door-open"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <h3 id="currentGuests">0</h3>
+                                    <p>Currently Staying</p>
+                                </div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon bg-warning">
+                                    <i class="fas fa-door-closed"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <h3 id="checkedOutGuests">0</h3>
+                                    <p>Checked Out</p>
+                                </div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon bg-purple">
+                                    <i class="fas fa-crown"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <h3 id="vipGuests">0</h3>
+                                    <p>VIP Guests</p>
+                                </div>
+                            </div>
+                        </div>
+            
+                        <!-- Guests Table -->
+                        <div class="table-container">
+                            <div class="table-actions">
+                                <div class="filter-group">
+                                    <label>Filter:</label>
+                                    <select id="guestFilter">
+                                        <option value="all">All Guests</option>
+                                        <option value="current">Current Guests</option>
+                                        <option value="checked-out">Checked Out</option>
+                                        <option value="vip">VIP Guests</option>
+                                    </select>
+                                </div>
+                                <div class="view-options">
+                                    <button class="btn-icon" id="refreshBtn" title="Refresh">
+                                        <i class="fas fa-sync-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+            
+                            <div class="table-responsive">
+                                <table class="data-table" id="guestsTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Guest Name</th>
+                                            <th>Contact</th>
+                                            <th>Room</th>
+                                            <th>Check-In</th>
+                                            <th>Check-Out</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Will be populated by JavaScript -->
+                                    </tbody>
+                                </table>
+                            </div>
+            
+                            <div class="table-footer">
+                                <div class="pagination" id="pagination">
+                                    <!-- Will be populated by JavaScript -->
+                                </div>
+                            </div>
+                        </div>
+                    </main>
+                </div>
+            
+                <!-- Guest Modal -->
+                <div class="modal" id="guestModal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 id="modalTitle">Add New Guest</h3>
+                            <button class="close-modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="guestForm">
+                                <input type="hidden" id="guestId">
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="firstName">First Name *</label>
+                                        <input type="text" id="firstName" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="lastName">Last Name *</label>
+                                        <input type="text" id="lastName" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="email">Email *</label>
+                                        <input type="email" id="email" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="phone">Phone *</label>
+                                        <input type="tel" id="phone" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="idType">ID Type *</label>
+                                        <select id="idType" required>
+                                            <option value="passport">Passport</option>
+                                            <option value="driver-license">Driver's License</option>
+                                            <option value="national-id">National ID</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="idNumber">ID Number *</label>
+                                        <input type="text" id="idNumber" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="roomNumber">Room Number *</label>
+                                        <select id="roomNumber" required>
+                                            <!-- Will be populated by JavaScript -->
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="guestType">Guest Type *</label>
+                                        <select id="guestType" required>
+                                            <option value="regular">Regular</option>
+                                            <option value="vip">VIP</option>
+                                            <option value="group">Group</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="checkInDate">Check-In Date *</label>
+                                        <input type="datetime-local" id="checkInDate" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="checkOutDate">Check-Out Date *</label>
+                                        <input type="datetime-local" id="checkOutDate" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="specialRequests">Special Requests</label>
+                                    <textarea id="specialRequests" rows="3"></textarea>
+                                </div>
+                                
+                                <div class="form-actions">
+                                    <button type="button" class="btn btn-outline close-modal">Cancel</button>
+                                    <button type="submit" class="btn btn-primary" id="saveGuestBtn">Save Guest</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
-
-                <!-- Guest Actions -->
-                <div class="section-actions">
-                    <div class="search-filter">
-                        <div class="search-box">
-                            <i class="fas fa-search"></i>
-                            <input type="text" id="guestSearch" placeholder="Search guests...">
-                        </div>
-                        <select id="guestStatusFilter">
-                            <option value="all">All Guests</option>
-                            <option value="checked-in">Checked In</option>
-                            <option value="checked-out">Checked Out</option>
-                            <option value="vip">VIP Guests</option>
-                        </select>
-                    </div>
-                    <button id="addGuestBtn" class="btn btn-primary">
-                        <i class="fas fa-plus"></i> Add Guest
-                    </button>
-                </div>
-
-                <!-- Guest Summary Cards -->
-                <div class="summary-cards">
-                    <div class="summary-card">
-                        <div class="summary-icon bg-primary">
-                            <i class="fas fa-users"></i>
-                        </div>
-                        <div class="summary-info">
-                            <h3 id="totalGuests">0</h3>
-                            <p>Total Guests</p>
-                        </div>
-                    </div>
-                    <div class="summary-card">
-                        <div class="summary-icon bg-success">
-                            <i class="fas fa-door-open"></i>
-                        </div>
-                        <div class="summary-info">
-                            <h3 id="checkedInGuests">0</h3>
-                            <p>Checked In</p>
-                        </div>
-                    </div>
-                    <div class="summary-card">
-                        <div class="summary-icon bg-warning">
-                            <i class="fas fa-door-closed"></i>
-                        </div>
-                        <div class="summary-info">
-                            <h3 id="checkedOutGuests">0</h3>
-                            <p>Checked Out</p>
-                        </div>
-                    </div>
-                    <div class="summary-card">
-                        <div class="summary-icon bg-danger">
-                            <i class="fas fa-crown"></i>
-                        </div>
-                        <div class="summary-info">
-                            <h3 id="vipGuests">0</h3>
-                            <p>VIP Guests</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Guests Table -->
-                <div class="table-section">
-                    <div class="table-responsive">
-                        <table class="data-table" id="guestsTable">
-                            <thead>
-                                <tr>
-                                    <th>Guest</th>
-                                    <th>Contact</th>
-                                    <th>Room</th>
-                                    <th>Check-In</th>
-                                    <th>Check-Out</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- Will be populated by JS -->
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="table-footer">
-                        <div class="table-pagination" id="guestsPagination">
-                            <!-- Pagination will be added here -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </main>
-    </div>
-
-    <!-- Guest Modal (for add/edit) -->
-    <div class="modal" id="guestModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 id="guestModalTitle">Add New Guest</h3>
-                <button class="close-modal">&times;</button>
-            </div>
-            <div class="modal-body">
-                <form id="guestForm">
-                    <input type="hidden" id="guestId">
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="firstName">First Name *</label>
-                            <input type="text" id="firstName" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="lastName">Last Name *</label>
-                            <input type="text" id="lastName" required>
-                        </div>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="email">Email *</label>
-                            <input type="email" id="email" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="phone">Phone *</label>
-                            <input type="tel" id="phone" required>
-                        </div>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="idType">ID Type *</label>
-                            <select id="idType" required>
-                                <option value="passport">Passport</option>
-                                <option value="driver-license">Driver's License</option>
-                                <option value="national-id">National ID</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="idNumber">ID Number *</label>
-                            <input type="text" id="idNumber" required>
-                        </div>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="roomNumber">Room Number *</label>
-                            <select id="roomNumber" required>
-                                <!-- Will be populated by JS -->
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="guestType">Guest Type *</label>
-                            <select id="guestType" required>
-                                <option value="regular">Regular</option>
-                                <option value="vip">VIP</option>
-                                <option value="group">Group</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="checkInDate">Check-In Date *</label>
-                            <input type="date" id="checkInDate" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="checkOutDate">Check-Out Date *</label>
-                            <input type="date" id="checkOutDate" required>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="specialRequests">Special Requests</label>
-                        <textarea id="specialRequests" rows="3"></textarea>
-                    </div>
-                    
-                    <div class="form-actions">
-                        <button type="button" class="btn btn-outline close-modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Save Guest</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
 
     <script src="script.js"></script>
     <script src="guest.js"></script>
