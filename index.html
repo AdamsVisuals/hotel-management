@@ -129,224 +129,360 @@
                     </div>
                 </div>
 
-                <!-- Stats Cards -->
-                <div class="stats-cards">
-                    <div class="stat-card">
-                        <div class="stat-icon bg-primary">
-                            <i class="fas fa-bed"></i>
-                        </div>
-                        <div class="stat-info">
-                            <h3>125</h3>
-                            <p>Total Rooms</p>
-                        </div>
-                        <div class="stat-progress">
-                            <div class="progress-bar" style="width: 85%;"></div>
-                            <span>85% Occupied</span>
-                        </div>
-                    </div>
-                    
-                    <div class="stat-card">
-                        <div class="stat-icon bg-success">
-                            <i class="fas fa-users"></i>
-                        </div>
-                        <div class="stat-info">
-                            <h3>94</h3>
-                            <p>Current Guests</p>
-                        </div>
-                        <div class="stat-progress">
-                            <div class="progress-bar" style="width: 75%;"></div>
-                            <span>75% Capacity</span>
-                        </div>
-                    </div>
-                    
-                    <div class="stat-card">
-                        <div class="stat-icon bg-warning">
-                            <i class="fas fa-calendar-check"></i>
-                        </div>
-                        <div class="stat-info">
-                            <h3>42</h3>
-                            <p>Today's Check-ins</p>
-                        </div>
-                        <div class="stat-progress">
-                            <div class="progress-bar" style="width: 42%;"></div>
-                            <span>42% of Capacity</span>
-                        </div>
-                    </div>
-                    
-                    <div class="stat-card">
-                        <div class="stat-icon bg-danger">
-                            <i class="fas fa-dollar-sign"></i>
-                        </div>
-                        <div class="stat-info">
-                            <h3>$24,580</h3>
-                            <p>Today's Revenue</p>
-                        </div>
-                        <div class="stat-progress">
-                            <div class="progress-bar" style="width: 65%;"></div>
-                            <span>65% of Target</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Charts and Recent Activity -->
-                <div class="dashboard-row">
-                    <div class="chart-container">
-                        <div class="chart-header">
-                            <h3>Occupancy Rate</h3>
-                            <div class="chart-actions">
-                                <button class="btn btn-sm">Day</button>
-                                <button class="btn btn-sm active">Week</button>
-                                <button class="btn btn-sm">Month</button>
-                            </div>
-                        </div>
-                        <div class="chart" id="occupancy-chart">
-                            <!-- Chart will be rendered here -->
-                            <canvas id="occupancyChart"></canvas>
-                        </div>
-                    </div>
-                    
-                    <div class="recent-activity">
-                        <div class="activity-header">
-                            <h3>Recent Activities</h3>
-                            <a href="#" class="view-all">View All</a>
-                        </div>
-                        <ul class="activity-list">
-                            <li>
-                                <div class="activity-icon bg-primary">
-                                    <i class="fas fa-bed"></i>
-                                </div>
-                                <div class="activity-details">
-                                    <p>Room 204 checked out</p>
-                                    <small>2 minutes ago</small>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="activity-icon bg-success">
-                                    <i class="fas fa-users"></i>
-                                </div>
-                                <div class="activity-details">
-                                    <p>New reservation from John Doe</p>
-                                    <small>15 minutes ago</small>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="activity-icon bg-warning">
-                                    <i class="fas fa-concierge-bell"></i>
-                                </div>
-                                <div class="activity-details">
-                                    <p>Service request from Room 312</p>
-                                    <small>25 minutes ago</small>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="activity-icon bg-danger">
-                                    <i class="fas fa-exclamation-circle"></i>
-                                </div>
-                                <div class="activity-details">
-                                    <p>Maintenance issue in Room 105</p>
-                                    <small>1 hour ago</small>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="activity-icon bg-secondary">
-                                    <i class="fas fa-user-tie"></i>
-                                </div>
-                                <div class="activity-details">
-                                    <p>New staff member added</p>
-                                    <small>2 hours ago</small>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Recent Bookings -->
-                <div class="recent-bookings">
-                    <div class="section-header">
-                        <h3>Recent Bookings</h3>
-                        <a href="#" class="btn btn-primary">View All</a>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="booking-table">
-                            <thead>
-                                <tr>
-                                    <th>Booking ID</th>
-                                    <th>Guest Name</th>
-                                    <th>Room Type</th>
-                                    <th>Check-in</th>
-                                    <th>Check-out</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>#BK-1001</td>
-                                    <td>John Smith</td>
-                                    <td>Deluxe Suite</td>
-                                    <td>15 Jun 2023</td>
-                                    <td>20 Jun 2023</td>
-                                    <td><span class="status confirmed">Confirmed</span></td>
-                                    <td>
-                                        <button class="btn-icon"><i class="fas fa-eye"></i></button>
-                                        <button class="btn-icon"><i class="fas fa-edit"></i></button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>#BK-1002</td>
-                                    <td>Sarah Johnson</td>
-                                    <td>Executive Room</td>
-                                    <td>16 Jun 2023</td>
-                                    <td>18 Jun 2023</td>
-                                    <td><span class="status pending">Pending</span></td>
-                                    <td>
-                                        <button class="btn-icon"><i class="fas fa-eye"></i></button>
-                                        <button class="btn-icon"><i class="fas fa-edit"></i></button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>#BK-1003</td>
-                                    <td>Michael Brown</td>
-                                    <td>Standard Room</td>
-                                    <td>17 Jun 2023</td>
-                                    <td>19 Jun 2023</td>
-                                    <td><span class="status checked-in">Checked-in</span></td>
-                                    <td>
-                                        <button class="btn-icon"><i class="fas fa-eye"></i></button>
-                                        <button class="btn-icon"><i class="fas fa-edit"></i></button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>#BK-1004</td>
-                                    <td>Emily Davis</td>
-                                    <td>Family Suite</td>
-                                    <td>18 Jun 2023</td>
-                                    <td>22 Jun 2023</td>
-                                    <td><span class="status confirmed">Confirmed</span></td>
-                                    <td>
-                                        <button class="btn-icon"><i class="fas fa-eye"></i></button>
-                                        <button class="btn-icon"><i class="fas fa-edit"></i></button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>#BK-1005</td>
-                                    <td>Robert Wilson</td>
-                                    <td>Presidential Suite</td>
-                                    <td>20 Jun 2023</td>
-                                    <td>25 Jun 2023</td>
-                                    <td><span class="status cancelled">Cancelled</span></td>
-                                    <td>
-                                        <button class="btn-icon"><i class="fas fa-eye"></i></button>
-                                        <button class="btn-icon"><i class="fas fa-edit"></i></button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </main>
+<!-- Stats Cards - Now with Real Data -->
+<div class="stats-cards">
+    <div class="stat-card">
+        <div class="stat-icon bg-primary">
+            <i class="fas fa-bed"></i>
+        </div>
+        <div class="stat-info">
+            <h3 id="total-rooms-count">0</h3>
+            <p>Total Rooms</p>
+        </div>
+        <div class="stat-progress">
+            <div class="progress-bar" id="occupancy-progress"></div>
+            <span id="occupancy-rate">0% Occupied</span>
+        </div>
     </div>
+    
+    <div class="stat-card">
+        <div class="stat-icon bg-success">
+            <i class="fas fa-users"></i>
+        </div>
+        <div class="stat-info">
+            <h3 id="current-guests-count">0</h3>
+            <p>Current Guests</p>
+        </div>
+        <div class="stat-progress">
+            <div class="progress-bar" id="capacity-progress"></div>
+            <span id="capacity-rate">0% Capacity</span>
+        </div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-icon bg-warning">
+            <i class="fas fa-calendar-check"></i>
+        </div>
+        <div class="stat-info">
+            <h3 id="todays-checkins">0</h3>
+            <p>Today's Check-ins</p>
+        </div>
+        <div class="stat-progress">
+            <div class="progress-bar" id="checkin-progress"></div>
+            <span id="checkin-rate">0% of Capacity</span>
+        </div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-icon bg-danger">
+            <i class="fas fa-dollar-sign"></i>
+        </div>
+        <div class="stat-info">
+            <h3 id="todays-revenue">$0</h3>
+            <p>Today's Revenue</p>
+        </div>
+        <div class="stat-progress">
+            <div class="progress-bar" id="revenue-progress"></div>
+            <span id="revenue-rate">0% of Target</span>
+        </div>
+    </div>
+</div>
+
+<!-- Charts and Recent Activity -->
+<div class="dashboard-row">
+    <div class="chart-container">
+        <div class="chart-header">
+            <h3>Occupancy Rate</h3>
+            <div class="chart-actions">
+                <button class="btn btn-sm">Day</button>
+                <button class="btn btn-sm active">Week</button>
+                <button class="btn btn-sm">Month</button>
+            </div>
+        </div>
+        <div class="chart" id="occupancy-chart">
+            <canvas id="occupancyChart"></canvas>
+        </div>
+    </div>
+    
+    <div class="recent-activity">
+        <div class="activity-header">
+            <h3>Recent Activities</h3>
+            <a href="#" class="view-all">View All</a>
+        </div>
+        <ul class="activity-list" id="recent-activities-list">
+            <!-- Will be populated by JavaScript -->
+        </ul>
+    </div>
+</div>
+
+<!-- Recent Bookings -->
+<div class="recent-bookings">
+    <div class="section-header">
+        <h3>Recent Bookings</h3>
+        <a href="booking-management.html" class="btn btn-primary">View All</a>
+    </div>
+    <div class="table-responsive">
+        <table class="booking-table">
+            <thead>
+                <tr>
+                    <th>Booking ID</th>
+                    <th>Guest Name</th>
+                    <th>Room Type</th>
+                    <th>Check-in</th>
+                    <th>Check-out</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="recent-bookings-body">
+                <!-- Will be populated by JavaScript -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Load real data from localStorage
+    const bookings = JSON.parse(localStorage.getItem('hotelBookings')) || [];
+    const rooms = JSON.parse(localStorage.getItem('hotelRooms')) || [];
+    const guests = JSON.parse(localStorage.getItem('hotelGuests')) || [];
+    const staff = JSON.parse(localStorage.getItem('hotelStaff')) || [];
+    
+    // Get today's date in YYYY-MM-DD format
+    const today = new Date().toISOString().split('T')[0];
+    
+    // 1. Update Stats Cards with Real Data
+    updateStatsCards();
+    
+    // 2. Populate Recent Bookings table
+    populateRecentBookings();
+    
+    // 3. Load Recent Activities
+    loadRecentActivities();
+    
+    // 4. Initialize Charts
+    initCharts();
+    
+    function updateStatsCards() {
+        // Total Rooms
+        document.getElementById('total-rooms-count').textContent = rooms.length;
+        
+        // Occupancy Rate
+        const occupiedRooms = rooms.filter(room => room.status === 'occupied').length;
+        const occupancyRate = Math.round((occupiedRooms / rooms.length) * 100) || 0;
+        document.getElementById('occupancy-rate').textContent = `${occupancyRate}% Occupied`;
+        document.getElementById('occupancy-progress').style.width = `${occupancyRate}%`;
+        
+        // Current Guests (count guests with active bookings)
+        const currentGuests = bookings.filter(booking => {
+            return booking.checkInDate <= today && booking.checkOutDate >= today;
+        }).length;
+        document.getElementById('current-guests-count').textContent = currentGuests;
+        
+        // Capacity Rate (assuming 2 guests per room as standard)
+        const capacityRate = Math.round((currentGuests / (rooms.length * 2)) * 100) || 0;
+        document.getElementById('capacity-rate').textContent = `${capacityRate}% Capacity`;
+        document.getElementById('capacity-progress').style.width = `${capacityRate}%`;
+        
+        // Today's Check-ins
+        const todaysCheckins = bookings.filter(booking => booking.checkInDate === today).length;
+        document.getElementById('todays-checkins').textContent = todaysCheckins;
+        
+        // Check-in Rate (vs total rooms)
+        const checkinRate = Math.round((todaysCheckins / rooms.length) * 100) || 0;
+        document.getElementById('checkin-rate').textContent = `${checkinRate}% of Capacity`;
+        document.getElementById('checkin-progress').style.width = `${checkinRate}%`;
+        
+        // Today's Revenue
+        const todaysRevenue = bookings
+            .filter(booking => booking.checkInDate === today)
+            .reduce((total, booking) => total + booking.totalPrice, 0);
+        document.getElementById('todays-revenue').textContent = `$${todaysRevenue.toFixed(2)}`;
+        
+        // Revenue Rate (assuming $200 per room as target)
+        const revenueTarget = rooms.length * 200;
+        const revenueRate = Math.round((todaysRevenue / revenueTarget) * 100) || 0;
+        document.getElementById('revenue-rate').textContent = `${revenueRate}% of Target`;
+        document.getElementById('revenue-progress').style.width = `${revenueRate}%`;
+    }
+    
+    function populateRecentBookings() {
+        const tbody = document.getElementById('recent-bookings-body');
+        tbody.innerHTML = '';
+        
+        // Get 5 most recent bookings
+        const recentBookings = [...bookings]
+            .sort((a, b) => new Date(b.createdAt || b.checkInDate) - new Date(a.createdAt || a.checkInDate))
+            .slice(0, 5);
+        
+        recentBookings.forEach(booking => {
+            const guest = guests.find(g => g.id === booking.guestId) || { name: 'Unknown Guest' };
+            const room = rooms.find(r => r.id === booking.roomId) || { type: 'Unknown' };
+            
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${booking.id || 'N/A'}</td>
+                <td>${guest.name}</td>
+                <td>${room.type}</td>
+                <td>${formatDate(booking.checkInDate)}</td>
+                <td>${formatDate(booking.checkOutDate)}</td>
+                <td><span class="status ${booking.status.toLowerCase()}">${booking.status}</span></td>
+                <td>
+                    <button class="btn-icon"><i class="fas fa-eye"></i></button>
+                    <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                </td>
+            `;
+            tbody.appendChild(row);
+        });
+    }
+    
+    function loadRecentActivities() {
+        const activityList = document.getElementById('recent-activities-list');
+        activityList.innerHTML = '';
+        
+        // Get recent checkouts (last 24 hours)
+        const recentCheckouts = bookings.filter(booking => {
+            return booking.status === 'checked-out' && 
+                   new Date(booking.checkOutDate) > new Date(Date.now() - 86400000);
+        });
+        
+        // Get recent bookings (last 24 hours)
+        const recentBookings = bookings.filter(booking => {
+            return new Date(booking.createdAt || booking.checkInDate) > new Date(Date.now() - 86400000);
+        });
+        
+        // Add activities to list
+        recentCheckouts.forEach(booking => {
+            const room = rooms.find(r => r.id === booking.roomId) || { number: 'N/A' };
+            addActivityItem(
+                'primary',
+                'fas fa-bed',
+                `Room ${room.number} checked out`,
+                booking.checkOutDate
+            );
+        });
+        
+        recentBookings.forEach(booking => {
+            const guest = guests.find(g => g.id === booking.guestId) || { name: 'New Guest' };
+            addActivityItem(
+                'success',
+                'fas fa-users',
+                `New reservation from ${guest.name}`,
+                booking.createdAt || booking.checkInDate
+            );
+        });
+        
+        // Add sample maintenance issue (replace with real data if available)
+        const maintenanceRooms = rooms.filter(r => r.status === 'maintenance');
+        if (maintenanceRooms.length > 0) {
+            addActivityItem(
+                'danger',
+                'fas fa-exclamation-circle',
+                `Maintenance issue in Room ${maintenanceRooms[0].number}`,
+                new Date().toISOString()
+            );
+        }
+        
+        // Add sample staff activity (replace with real data if available)
+        if (staff.length > 0) {
+            addActivityItem(
+                'secondary',
+                'fas fa-user-tie',
+                `New staff member ${staff[staff.length-1].name} added`,
+                staff[staff.length-1].createdAt || new Date().toISOString()
+            );
+        }
+    }
+    
+    function addActivityItem(bgClass, icon, text, date) {
+        const activityList = document.getElementById('recent-activities-list');
+        const li = document.createElement('li');
+        li.innerHTML = `
+            <div class="activity-icon bg-${bgClass}">
+                <i class="${icon}"></i>
+            </div>
+            <div class="activity-details">
+                <p>${text}</p>
+                <small>${timeSince(date)} ago</small>
+            </div>
+        `;
+        activityList.appendChild(li);
+    }
+    
+    function initCharts() {
+        // Weekly occupancy chart
+        const ctx = document.getElementById('occupancyChart').getContext('2d');
+        
+        // Generate data for last 7 days
+        const days = [];
+        const occupancyData = [];
+        
+        for (let i = 6; i >= 0; i--) {
+            const date = new Date();
+            date.setDate(date.getDate() - i);
+            const dateStr = date.toISOString().split('T')[0];
+            days.push(date.toLocaleDateString('en-US', { weekday: 'short' }));
+            
+            // Calculate occupancy for each day
+            const occupied = bookings.filter(booking => {
+                return booking.checkInDate <= dateStr && booking.checkOutDate >= dateStr;
+            }).length;
+            
+            const rate = rooms.length > 0 ? Math.round((occupied / rooms.length) * 100) : 0;
+            occupancyData.push(rate);
+        }
+        
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: days,
+                datasets: [{
+                    label: 'Occupancy Rate (%)',
+                    data: occupancyData,
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 2,
+                    tension: 0.1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100
+                    }
+                }
+            }
+        });
+    }
+    
+    // Helper functions
+    function formatDate(dateString) {
+        if (!dateString) return 'N/A';
+        const options = { year: 'numeric', month: 'short', day: 'numeric' };
+        return new Date(dateString).toLocaleDateString(undefined, options);
+    }
+    
+    function timeSince(dateString) {
+        const date = new Date(dateString);
+        const seconds = Math.floor((new Date() - date) / 1000);
+        
+        let interval = Math.floor(seconds / 31536000);
+        if (interval >= 1) return interval + " year" + (interval === 1 ? "" : "s");
+        interval = Math.floor(seconds / 2592000);
+        if (interval >= 1) return interval + " month" + (interval === 1 ? "" : "s");
+        interval = Math.floor(seconds / 86400);
+        if (interval >= 1) return interval + " day" + (interval === 1 ? "" : "s");
+        interval = Math.floor(seconds / 3600);
+        if (interval >= 1) return interval + " hour" + (interval === 1 ? "" : "s");
+        interval = Math.floor(seconds / 60);
+        if (interval >= 1) return interval + " minute" + (interval === 1 ? "" : "s");
+        return Math.floor(seconds) + " second" + (seconds === 1 ? "" : "s");
+    }
+});
+</script>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="script.js"></script>
