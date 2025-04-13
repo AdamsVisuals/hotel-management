@@ -229,194 +229,64 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     
-// Update the handleBookingSubmit function as follows:
-function handleBookingSubmit(e) {
-    e.preventDefault();
-    
-    // 1. Get form values
-    const bookingId = document.getElementById('booking-id').value;
-    const roomId = document.getElementById('room-select').value;
-    const room = rooms.find(r => r.id === roomId);
-    
-    if (!room) {
-        alert('Please select a valid room');
-        return;
-    }
-    
-    // 2. Prepare booking data
-    const bookingData = {
-        guestId: document.getElementById('guest-select').value,
-        roomId: roomId,
-        checkInDate: document.getElementById('check-in-date').value,
-        checkOutDate: document.getElementById('check-out-date').value,
-        adults: parseInt(document.getElementById('adults').value) || 1,
-        children: parseInt(document.getElementById('children').value) || 0,
-        totalPrice: parseFloat(document.getElementById('total-price').value),
-        status: document.getElementById('booking-status').value,
-        specialRequests: document.getElementById('special-requests').value,
-        createdAt: new Date().toISOString() // Add creation timestamp
-    };
-    
-    // 3. Validation
-    if (!bookingData.guestId || !bookingData.roomId || 
-        !bookingData.checkInDate || !bookingData.checkOutDate || 
-        isNaN(bookingData.totalPrice)) {
-        alert('Please fill in all required fields');
-        return;
-    }
-    
-    if (new Date(bookingData.checkOutDate) <= new Date(bookingData.checkInDate)) {
-        alert('Check-out date must be after check-in date');
-        return;
-    }
-    
-    // 4. Save the booking
-    if (bookingId) {
-        // Update existing
-        const index = bookings.findIndex(b => b.id === bookingId);
-        if (index !== -1) bookings[index] = { ...bookings[index], ...bookingData };
-    } else {
-        // Create new
-        const newBooking = {
-            id: 'book-' + Date.now().toString(), // Prefix for clarity
-            ...bookingData
-        };
-        bookings.push(newBooking);
+    function handleBookingSubmit(e) {
+        e.preventDefault();
         
-        // Update room status if checked in
-        if (bookingData.status === 'checked-in') {
-            room.status = 'occupied';
-            localStorage.setItem('hotelRooms', JSON.stringify(rooms));
-        }
-    }
-    
-    // 5. Save and refresh
-    saveAllData();
-    closeBookingModal();
-    displayBookings(); // This should repopulate the table
-    
-    // Debugging check
-    console.log('Current bookings:', bookings);
-}
-
-// Update the saveAllData function:
-function saveAllData() {
-    try {
-        localStorage.setItem('hotelBookings', JSON.stringify(bookings));
-        console.log('Bookings saved to localStorage:', bookings);
-    } catch (error) {
-        console.error('Error saving bookings:', error);
-        alert('Failed to save booking data');
-    }
-}
-
-// Update the displayBookings function:
-function displayBookings() {
-    try {
-        const searchTerm = bookingSearch.value.toLowerCase();
-        const filter = bookingFilter.value;
-        const dateFilter = bookingDate.value;
+        const bookingId = document.getElementById('booking-id').value;
+        const roomId = roomSelect.value;
+        const room = rooms.find(r => r.id === roomId);
         
-        // Debug: Check what's being loaded
-        console.log('Displaying bookings from:', bookings);
-        
-        const filteredBookings = bookings.filter(booking => {
-            const guest = guests.find(g => g.id === booking.guestId) || {};
-            const room = rooms.find(r => r.id === booking.roomId) || {};
-            
-            // Search matching
-            const matchSearch = 
-                booking.id.toLowerCase().includes(searchTerm) ||
-                (guest.name && guest.name.toLowerCase().includes(searchTerm)) ||
-                (room.number && room.number.toString().includes(searchTerm));
-            
-            // Filter matching
-            const matchFilter = filter === 'all' || booking.status === filter;
-            
-            // Date matching
-            let matchDate = true;
-            if (dateFilter) {
-                try {
-                    const checkIn = booking.checkInDate ? new Date(booking.checkInDate).toISOString().split('T')[0] : '';
-                    const checkOut = booking.checkOutDate ? new Date(booking.checkOutDate).toISOString().split('T')[0] : '';
-                    matchDate = checkIn === dateFilter || checkOut === dateFilter || 
-                               (dateFilter > checkIn && dateFilter < checkOut);
-                } catch (e) {
-                    console.error('Date parsing error:', e);
-                }
-            }
-            
-            return matchSearch && matchFilter && matchDate;
-        });
-        
-        // Clear and rebuild table
-        bookingTableBody.innerHTML = '';
-        
-        if (filteredBookings.length === 0) {
-            bookingTableBody.innerHTML = `
-                <tr>
-                    <td colspan="8" class="no-bookings">
-                        <i class="fas fa-calendar-times"></i> No bookings match your criteria
-                    </td>
-                </tr>
-            `;
+        if (!room) {
+            alert('Please select a valid room');
             return;
         }
         
-        // Sort by check-in date (newest first)
-        filteredBookings.sort((a, b) => new Date(b.checkInDate) - new Date(a.checkInDate));
+        const bookingData = {
+            guestId: guestSelect.value,
+            roomId: roomId,
+            checkInDate: checkInDate.value,
+            checkOutDate: checkOutDate.value,
+            adults: parseInt(document.getElementById('adults').value),
+            children: parseInt(document.getElementById('children').value) || 0,
+            totalPrice: parseFloat(totalPrice.value),
+            status: document.getElementById('booking-status').value,
+            specialRequests: document.getElementById('special-requests').value
+        };
         
-        filteredBookings.forEach(booking => {
-            const guest = guests.find(g => g.id === booking.guestId) || {};
-            const room = rooms.find(r => r.id === booking.roomId) || {};
-            const statusClass = `status-${booking.status.replace(' ', '-')}`;
+        // Validation
+        if (!bookingData.guestId || !bookingData.roomId || !bookingData.checkInDate || 
+            !bookingData.checkOutDate || isNaN(bookingData.totalPrice)) {
+            alert('Please fill in all required fields');
+            return;
+        }
+        
+        if (new Date(bookingData.checkOutDate) <= new Date(bookingData.checkInDate)) {
+            alert('Check-out date must be after check-in date');
+            return;
+        }
+        
+        if (bookingId) {
+            // Update existing booking
+            const index = bookings.findIndex(b => b.id === bookingId);
+            if (index !== -1) bookings[index] = { ...bookings[index], ...bookingData };
+        } else {
+            // Create new booking
+            const newBooking = {
+                id: Date.now().toString(),
+                ...bookingData
+            };
+            bookings.push(newBooking);
             
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td data-label="ID">${booking.id.substring(0, 8)}</td>
-                <td data-label="Guest">${guest.name || 'Unknown Guest'}</td>
-                <td data-label="Room">${room.number ? `Room ${room.number}` : 'N/A'}</td>
-                <td data-label="Check-In">${formatDate(booking.checkInDate)}</td>
-                <td data-label="Check-Out">${formatDate(booking.checkOutDate)}</td>
-                <td data-label="Total">${formatCurrency(booking.totalPrice)}</td>
-                <td data-label="Status">
-                    <span class="status-badge ${statusClass}">
-                        ${booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
-                    </span>
-                </td>
-                <td data-label="Actions" class="actions">
-                    ${['confirmed', 'upcoming'].includes(booking.status) ? 
-                        `<button class="btn-action btn-checkin" data-id="${booking.id}" title="Check In">
-                            <i class="fas fa-sign-in-alt"></i>
-                        </button>` : ''}
-                    ${booking.status === 'checked-in' ? 
-                        `<button class="btn-action btn-checkout" data-id="${booking.id}" title="Check Out">
-                            <i class="fas fa-sign-out-alt"></i>
-                        </button>` : ''}
-                    ${!['cancelled', 'checked-out'].includes(booking.status) ? 
-                        `<button class="btn-action btn-cancel" data-id="${booking.id}" title="Cancel">
-                            <i class="fas fa-times"></i>
-                        </button>` : ''}
-                    <button class="btn-action btn-edit" data-id="${booking.id}" title="Edit">
-                        <i class="fas fa-edit"></i>
-                    </button>
-                </td>
-            `;
-            bookingTableBody.appendChild(row);
-        });
+            // Update room status if booking is active
+            if (bookingData.status === 'checked-in') {
+                room.status = 'occupied';
+            }
+        }
         
-        attachBookingActionListeners();
-    } catch (error) {
-        console.error('Error displaying bookings:', error);
-        bookingTableBody.innerHTML = `
-            <tr>
-                <td colspan="8" class="error">
-                    <i class="fas fa-exclamation-triangle"></i> Error loading bookings
-                </td>
-            </tr>
-        `;
+        saveAllData();
+        closeBookingModal();
+        displayBookings();
     }
-}
     
     function updateCheckOutMinDate() {
         if (checkInDate.value) {
