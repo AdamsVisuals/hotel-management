@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hotel Management System | Admin Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="rooms.css">
+    <link rel="stylesheet" href="reports.css">
 </head>
 <body>
     <div class="container">
@@ -30,13 +31,13 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#rooms">
+                    <a href="rooms.html">
                         <i class="fas fa-bed"></i>
                         <span>Room Management</span>
                     </a>
                 </li>
                 <li>
-                    <a href="guest.html">
+                    <a href="#guests">
                         <i class="fas fa-users"></i>
                         <span>Guest Management</span>
                     </a>
@@ -120,89 +121,106 @@
                     </div>
                 </div>
             </nav>
-            
-            <body>
-                <div class="room-management-container">
-                    <header class="room-header">
-                        <h1><i class="fas fa-door-open"></i> Room Management</h1>
-                        <nav class="room-nav">
-                            <a href="dashboard.html" class="nav-link"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-                            <a href="guest-management.html" class="nav-link"><i class="fas fa-users"></i> Guest Management</a>
-                        </nav>
-                    </header>
-            
-                    <main class="room-main">
-                        <div class="room-controls">
-                            <div class="search-filter">
-                                <div class="search-box">
-                                    <i class="fas fa-search"></i>
-                                    <input type="text" id="room-search" placeholder="Search rooms..." class="search-input">
-                                </div>
-                                <div class="filter-box">
-                                    <i class="fas fa-filter"></i>
-                                    <select id="room-filter" class="filter-select">
-                                        <option value="all">All Rooms</option>
-                                        <option value="available">Available</option>
-                                        <option value="occupied">Occupied</option>
-                                        <option value="maintenance">Maintenance</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <button id="add-room-btn" class="btn-primary">
-                                <i class="fas fa-plus-circle"></i> Add New Room
-                            </button>
+
+<body>
+    <div class="reports-container">
+        <header class="reports-header">
+            <h1><i class="fas fa-chart-bar"></i> Reports Dashboard</h1>
+            <nav class="reports-nav">
+                <a href="dashboard.html" class="nav-link"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                <a href="staff.html" class="nav-link"><i class="fas fa-users-cog"></i> Staff</a>
+                <a href="room-management.html" class="nav-link"><i class="fas fa-door-open"></i> Rooms</a>
+                <a href="guest-management.html" class="nav-link"><i class="fas fa-users"></i> Guests</a>
+                <a href="booking-management.html" class="nav-link"><i class="fas fa-calendar-alt"></i> Bookings</a>
+            </nav>
+        </header>
+
+        <main class="reports-main">
+            <div class="report-controls">
+                <div class="date-range-picker">
+                    <div class="date-input">
+                        <label for="start-date"><i class="fas fa-calendar-day"></i> Start Date</label>
+                        <input type="date" id="start-date">
+                    </div>
+                    <div class="date-input">
+                        <label for="end-date"><i class="fas fa-calendar-day"></i> End Date</label>
+                        <input type="date" id="end-date">
+                    </div>
+                    <button id="generate-report" class="btn-primary">
+                        <i class="fas fa-sync-alt"></i> Generate Report
+                    </button>
+                </div>
+            </div>
+
+            <div class="report-sections">
+                <!-- Occupancy Report -->
+                <section class="report-card">
+                    <h2><i class="fas fa-bed"></i> Room Occupancy</h2>
+                    <div class="chart-container">
+                        <canvas id="occupancyChart"></canvas>
+                    </div>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <h3>Total Rooms</h3>
+                            <p id="total-rooms">0</p>
                         </div>
-            
-                        <div id="rooms-list" class="room-cards-container">
-                            <!-- Rooms will be loaded here dynamically -->
+                        <div class="stat-card">
+                            <h3>Occupied</h3>
+                            <p id="occupied-rooms">0</p>
                         </div>
-                    </main>
-            
-                    <!-- Room Modal -->
-                    <div id="room-modal" class="modal">
-                        <div class="modal-content">
-                            <span class="close-modal">&times;</span>
-                            <h2 id="room-modal-title"><i class="fas fa-door-closed"></i> Add New Room</h2>
-                            <form id="room-form">
-                                <input type="hidden" id="room-id">
-                                <div class="form-group">
-                                    <label for="room-number"><i class="fas fa-hashtag"></i> Room Number</label>
-                                    <input type="text" id="room-number" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="room-type"><i class="fas fa-bed"></i> Room Type</label>
-                                    <select id="room-type" required>
-                                        <option value="single">Single</option>
-                                        <option value="double">Double</option>
-                                        <option value="suite">Suite</option>
-                                        <option value="deluxe">Deluxe</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="room-price"><i class="fas fa-dollar-sign"></i> Price Per Night</label>
-                                    <input type="number" id="room-price" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="room-status"><i class="fas fa-info-circle"></i> Status</label>
-                                    <select id="room-status" required>
-                                        <option value="available">Available</option>
-                                        <option value="occupied">Occupied</option>
-                                        <option value="maintenance">Maintenance</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="room-description"><i class="fas fa-align-left"></i> Description</label>
-                                    <textarea id="room-description"></textarea>
-                                </div>
-                                <button type="submit" class="btn-primary">
-                                    <i class="fas fa-save"></i> Save Room
-                                </button>
-                            </form>
+                        <div class="stat-card">
+                            <h3>Vacant</h3>
+                            <p id="vacant-rooms">0</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Occupancy Rate</h3>
+                            <p id="occupancy-rate">0%</p>
                         </div>
                     </div>
-                </div>
+                </section>
 
+                <!-- Revenue Report -->
+                <section class="report-card">
+                    <h2><i class="fas fa-money-bill-wave"></i> Revenue Analysis</h2>
+                    <div class="chart-container">
+                        <canvas id="revenueChart"></canvas>
+                    </div>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <h3>Total Revenue</h3>
+                            <p id="total-revenue">$0.00</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Avg. Daily Rate</h3>
+                            <p id="average-rate">$0.00</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Revenue per Room</h3>
+                            <p id="rev-per-room">$0.00</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Guest Demographics -->
+                <section class="report-card">
+                    <h2><i class="fas fa-user-friends"></i> Guest Demographics</h2>
+                    <div class="chart-container">
+                        <canvas id="guestChart"></canvas>
+                    </div>
+                </section>
+
+                <!-- Booking Sources -->
+                <section class="report-card">
+                    <h2><i class="fas fa-calendar-check"></i> Booking Sources</h2>
+                    <div class="chart-container">
+                        <canvas id="bookingSourceChart"></canvas>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script src="reports.js"></script>
     <script src="script.js"></script>
-    <script src="rooms.js"></script>
 </body>
 </html>
