@@ -1675,6 +1675,41 @@ body.dark-mode .dark-mode-btn i.fa-sun {
     color: #FFD700; /* Gold color for sun icon */
 }
 
+/* User Greeting Styles */
+.user-greeting {
+    margin-left: auto;
+    padding: 0 20px;
+    color: black;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.user-greeting span {
+    margin-right: 5px;
+}
+
+/* Dark mode adjustment */
+body.dark-mode .user-greeting {
+    color: #e6e6e6;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .user-greeting {
+        padding: 10px 15px;
+        margin-left: 0;
+        order: 2;
+        width: 100%;
+        justify-content: center;
+        background-color: rgba(0,0,0,0.1);
+    }
+    
+    body.dark-mode .user-greeting {
+        background-color: rgba(255,255,255,0.1);
+    }
+}
+
 /* Responsive Styles */
 @media (max-width: 1200px) {
     .dashboard-row {

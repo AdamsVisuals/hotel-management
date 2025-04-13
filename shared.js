@@ -57,3 +57,35 @@ document.addEventListener('DOMContentLoaded', function() {
         darkModeBtn.innerHTML = '<i class="fas fa-sun"></i>';
     }
 });
+
+// Function to display time-based greeting
+function displayGreeting() {
+    const greetingElement = document.getElementById('time-greeting');
+    const usernameElement = document.getElementById('username-display');
+    
+    // Get current hour
+    const hour = new Date().getHours();
+    
+    // Set greeting based on time of day
+    let greeting;
+    if (hour < 12) {
+        greeting = 'Good morning';
+    } else if (hour < 18) {
+        greeting = 'Good afternoon';
+    } else {
+        greeting = 'Good evening';
+    }
+    
+    // Get username from localStorage or use default
+    const currentUser = JSON.parse(localStorage.getItem('currentUser')) || { name: 'Admin' };
+    
+    // Update DOM elements
+    if (greetingElement) greetingElement.textContent = greeting;
+    if (usernameElement) usernameElement.textContent = currentUser.name;
+}
+
+// Call the function when page loads
+document.addEventListener('DOMContentLoaded', displayGreeting);
+
+// Update greeting every minute in case page stays open long
+setInterval(displayGreeting, 60000);
